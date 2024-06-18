@@ -8,10 +8,18 @@ generator client {
   provider = "prisma-client-js"
 }
 
-model TestProfile {
-  id  String @id @default(uuid())
-  name String
-}
+model Profile {
+  id           String     @id @default(uuid())
+  clerkId      String     @unique
+  firstName    String
+  lastName     String
+  username     String
+  email        String
+  phone        String
+  profileImage String
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
 
+}
 // npx prisma migrate dev --name init
 // npx prisma db push
