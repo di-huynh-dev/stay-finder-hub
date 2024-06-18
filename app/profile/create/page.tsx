@@ -1,6 +1,7 @@
 import { Label } from '@/components/ui/label'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
+import SubmitButton from '@/components/form/SubmitButton'
 
 const createProfileAction = async (formDData: FormData) => {
   'use server'
@@ -18,9 +19,7 @@ function CreateProfilePage() {
             <Label htmlFor="firstName">First Name</Label>
             <Input id="firstName" type="text" name="firstName" />
           </div>
-          <Button type="submit" size="lg">
-            Submit
-          </Button>
+          <SubmitButton />
         </form>
       </div>
     </section>
