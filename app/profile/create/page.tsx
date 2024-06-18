@@ -13,6 +13,7 @@ function CreateProfilePage() {
             <FormInput name="firstName" type="text" label="First Name" placeholder="John" />
             <FormInput name="lastName" type="text" label="Last Name" placeholder="Doe" />
             <FormInput name="username" type="text" label="Username" placeholder="johndoe123" />
+            <FormInput name="phone" type="text" label="phone" placeholder="0123456789" />
           </div>
           <SubmitButton text="Create Profile" className="mt-8" />
         </FormContainer>
