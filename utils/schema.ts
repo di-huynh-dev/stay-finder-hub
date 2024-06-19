@@ -2,11 +2,20 @@ import * as z from 'zod'
 import { ZodSchema } from 'zod'
 
 export const profileSchema: ZodSchema = z.object({
-  firstName: z.string().min(2, { message: 'Please enter at least two characters!' }),
-  lastName: z.string().min(2, { message: 'Please enter at least two characters!' }),
-  username: z.string().min(2, { message: 'Please enter at least two characters!' }),
+  firstName: z.string().min(2, { message: 'First name must be at least 2 characters!' }),
+  lastName: z.string().min(2, { message: 'Last name must be at least 2 characters!' }),
+  username: z.string().min(2, { message: 'Username must be at least 2 characters!' }),
   phone: z
     .string()
-    .min(10, { message: 'Please enter at least 10 characters!' })
-    .max(12, { message: 'Please enter at max 12 characters!' }),
+    .min(10, { message: 'Phone number must be at least 10 characters!' })
+    .max(12, { message: 'Phone number must be at most 12 characters!' }),
 })
+
+export function validateWithZodSchema<T>(schema: ZodSchema<T>, data: unknown): T {
+  const result = schema.safeParse(data)
+  if (!result.success) {
+    const errors = result.error.errors.map((error) => error.message)
+    throw new Error(errors.join(', '))
+  }
+  return result.data
+}
