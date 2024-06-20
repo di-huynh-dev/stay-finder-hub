@@ -14,7 +14,7 @@ async function CreateProfilePage() {
   return (
     <section>
       <h1 className="text-2xl font-semibold mb-8 capitalize">new user</h1>
-      <div className="border p-8 roundedd-md ">
+      <div className="border p-8 rounded-md ">
         <FormContainer action={createProfileAction}>
           <div className="grid md:grid-cols-2 gap-4">
             <FormInput name="firstName" type="text" label="First Name" placeholder="John" />
@@ -22,7 +22,7 @@ async function CreateProfilePage() {
             <FormInput name="username" type="text" label="Username" placeholder="johndoe123" />
             <FormInput name="phone" type="text" label="phone" placeholder="0123456789" />
           </div>
-          <SubmitButton text="Create Profile" className="mt-8" />
+          <SubmitButton size="lg" text="Create Profile" className="mt-8" />
         </FormContainer>
       </div>
     </section>
