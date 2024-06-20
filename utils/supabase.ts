@@ -7,7 +7,7 @@ const key = process.env.SUPABASE_KEY as string
 
 const supabase = createClient(url, key)
 
-export const uploadImgage = async (image: File) => {
+export const uploadImage = async (image: File) => {
   const timestamp = Date.now()
   const newName = `${timestamp}-${image.name}`
   const { data, error } = await supabase.storage.from(bucket).upload(newName, image, {

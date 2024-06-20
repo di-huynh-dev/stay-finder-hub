@@ -37,17 +37,16 @@ function CreatePropertyPage() {
             <CountriesInput />
             <ImageInput />
           </div>
-          <>
-            <h3 className="text-lg mt-8 mb-4 font-medium">Accommodation Details</h3>
-            <CounterInput detail="guests" />
-            <CounterInput detail="bedrooms" />
-            <CounterInput detail="beds" />
-            <CounterInput detail="baths" />
-          </>
-          <>
-            <h3 className="text-lg mt-10 mb-6 font-medium">Amenities</h3>
-            <AmenitiesInput />
-          </>
+
+          <h3 className="text-lg mt-8 mb-4 font-medium">Accommodation Details</h3>
+          <CounterInput detail="guests" />
+          <CounterInput detail="bedrooms" />
+          <CounterInput detail="beds" />
+          <CounterInput detail="baths" />
+
+          <h3 className="text-lg mt-10 mb-6 font-medium">Amenities</h3>
+          <AmenitiesInput />
+
           <SubmitButton size="lg" text="create rental" className="mt-12" />
         </FormContainer>
       </div>
