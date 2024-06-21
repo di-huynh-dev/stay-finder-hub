@@ -203,6 +203,28 @@ export const toggleFavoriteAction = async (prevState: {
   }
 }
 
+export const fetchFavorites = async () => {
+  const user = await getAuthUser()
+  const favorites = await db.favorite.findMany({
+    where: {
+      profileId: user.id,
+    },
+    select: {
+      property: {
+        select: {
+          id: true,
+          name: true,
+          tagline: true,
+          price: true,
+          country: true,
+          image: true,
+        },
+      },
+    },
+  })
+  return favorites.map((favorite) => favorite.property)
+}
+
 const renderError = (error: unknown): { message: string } => {
   return {
     message: error instanceof Error ? error.message : 'An error occurred',
