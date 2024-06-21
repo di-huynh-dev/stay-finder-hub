@@ -6,7 +6,7 @@ import FormContainer from './FormContainer'
 import ImageInput from './ImageInput'
 import { type actionFunction } from '@/types/types'
 import { LuUser2 } from 'react-icons/lu'
-import SubmitButton from './SubmitButton'
+import { SubmitButton } from './SubmitButton'
 
 type ImageInputContainerProps = {
   image: string

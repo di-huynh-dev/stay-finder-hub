@@ -2,6 +2,8 @@
 import { ReloadIcon } from '@radix-ui/react-icons'
 import { useFormStatus } from 'react-dom'
 import { Button } from '@/components/ui/button'
+import { SignInButton } from '@clerk/nextjs'
+import { FaRegHeart } from 'react-icons/fa'
 
 type btnSize = 'default' | 'sm' | 'lg'
 type SubmitButtonProps = {
@@ -9,7 +11,7 @@ type SubmitButtonProps = {
   text?: string
   size: btnSize
 }
-function SubmitButton({ className = '', text = 'Submit', size = 'lg' }: SubmitButtonProps) {
+export function SubmitButton({ className = '', text = 'Submit', size = 'lg' }: SubmitButtonProps) {
   const { pending } = useFormStatus()
 
   return (
@@ -26,4 +28,12 @@ function SubmitButton({ className = '', text = 'Submit', size = 'lg' }: SubmitBu
   )
 }
 
-export default SubmitButton
+export const CardSignInButton = () => {
+  return (
+    <SignInButton mode="modal">
+      <Button type="button" size="icon" variant="outline" className="p-2 cursor-pointer" asChild>
+        <FaRegHeart />
+      </Button>
+    </SignInButton>
+  )
+}

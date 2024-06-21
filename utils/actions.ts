@@ -18,12 +18,12 @@ const getAuthUser = async () => {
   return user
 }
 
-export const createProfileAction = async (prevState: any, formDData: FormData) => {
+export const createProfileAction = async (prevState: any, formData: FormData) => {
   try {
     const user = await currentUser()
-    if (!user) throw new Error('Please sign in to create a profile')
+    if (!user) throw new Error('Please login to create a profile')
 
-    const rawData = Object.fromEntries(formDData)
+    const rawData = Object.fromEntries(formData)
     const validatedFields = validateWithZodSchema(profileSchema, rawData)
 
     await db.profile.create({
@@ -35,15 +35,11 @@ export const createProfileAction = async (prevState: any, formDData: FormData) =
         ...validatedFields,
       },
     })
-    await clerkClient.users.updateUser(user.id, {
+    await clerkClient.users.updateUserMetadata(user.id, {
       privateMetadata: {
         hasProfile: true,
       },
     })
-
-    return {
-      message: 'Profile created successfully',
-    }
   } catch (error) {
     return renderError(error)
   }
@@ -53,40 +49,58 @@ export const createProfileAction = async (prevState: any, formDData: FormData) =
 export const fetchProfileImage = async () => {
   const user = await currentUser()
   if (!user) return null
-  const profile = await db.profile.findUnique({ where: { clerkId: user.id }, select: { profileImage: true } })
+
+  const profile = await db.profile.findUnique({
+    where: {
+      clerkId: user.id,
+    },
+    select: {
+      profileImage: true,
+    },
+  })
+
   return profile?.profileImage
 }
 
 export const fetchProfile = async () => {
   const user = await getAuthUser()
-  const profile = await db.profile.findUnique({ where: { clerkId: user.id } })
-  if (!profile) return redirect('/profile/create')
+  const profile = await db.profile.findUnique({
+    where: {
+      clerkId: user.id,
+    },
+  })
+  if (!profile) redirect('/profile/create')
   return profile
 }
 
-export const updateProfileAction = async (prevState: any, formDData: FormData) => {
-  try {
-    const user = await getAuthUser()
+export const updateProfileAction = async (prevState: any, formData: FormData): Promise<{ message: string }> => {
+  const user = await getAuthUser()
 
-    const rawData = Object.fromEntries(formDData)
+  try {
+    const rawData = Object.fromEntries(formData)
     const validatedFields = validateWithZodSchema(profileSchema, rawData)
-    await db.profile.update({ where: { clerkId: user.id }, data: validatedFields })
+
+    await db.profile.update({
+      where: {
+        clerkId: user.id,
+      },
+      data: validatedFields,
+    })
+
     revalidatePath('/profile')
-    return {
-      message: 'Profile updated successfully',
-    }
+    return { message: 'Profile updated successfully' }
   } catch (error) {
     return renderError(error)
   }
 }
 
 export const updateProfileImageAction = async (prevState: any, formData: FormData): Promise<{ message: string }> => {
-  const image = formData.get('image') as File
   const user = await getAuthUser()
   try {
     const image = formData.get('image') as File
     const validatedFields = validateWithZodSchema(imagesSchema, { image })
     const fullPath = await uploadImage(validatedFields.image)
+
     await db.profile.update({
       where: {
         clerkId: user.id,
@@ -107,6 +121,7 @@ export const createPropertyAction = async (prevState: any, formData: FormData): 
   try {
     const rawData = Object.fromEntries(formData)
     const file = formData.get('image') as File
+    console.log(rawData)
 
     const validatedFields = validateWithZodSchema(propertySchema, rawData)
     const validatedFile = validateWithZodSchema(imagesSchema, { image: file })
@@ -119,8 +134,6 @@ export const createPropertyAction = async (prevState: any, formData: FormData): 
         profileId: user.id,
       },
     })
-
-    return { message: 'Property created successfully' }
   } catch (error) {
     return renderError(error)
   }
@@ -130,7 +143,7 @@ export const createPropertyAction = async (prevState: any, formData: FormData): 
 export const fetchProperties = async ({ search = '', category }: { search?: string; category?: string }) => {
   const properties = await db.property.findMany({
     where: {
-      category: category,
+      category,
       OR: [{ name: { contains: search, mode: 'insensitive' } }, { tagline: { contains: search, mode: 'insensitive' } }],
     },
     select: {
@@ -138,8 +151,8 @@ export const fetchProperties = async ({ search = '', category }: { search?: stri
       name: true,
       tagline: true,
       country: true,
-      image: true,
       price: true,
+      image: true,
     },
     orderBy: {
       createdAt: 'desc',
