@@ -225,6 +225,16 @@ export const fetchFavorites = async () => {
   return favorites.map((favorite) => favorite.property)
 }
 
+export const fetchPropertyDetail = async ({ propertyId }: { propertyId: string }) => {
+  return db.property.findUnique({
+    where: {
+      id: propertyId,
+    },
+    include: {
+      profile: true,
+    },
+  })
+}
 const renderError = (error: unknown): { message: string } => {
   return {
     message: error instanceof Error ? error.message : 'An error occurred',

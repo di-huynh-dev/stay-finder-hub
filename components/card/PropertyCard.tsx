@@ -12,7 +12,7 @@ function PropertyCard({ property }: { property: PropertyCardProps }) {
   const { country, id: propertyId, tagline } = property
   return (
     <article className="group relative">
-      <Link href={`/property/${propertyId}`}>
+      <Link href={`/properties/${propertyId}`}>
         <div className="relative h-[300px] mb-2 overflow-hidden rounded-md">
           <Image
             src={image}
