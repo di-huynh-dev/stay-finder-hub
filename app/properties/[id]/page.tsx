@@ -9,6 +9,7 @@ import PropertyDetails from '@/components/properties/PropertyDetails'
 import PropertyMap from '@/components/properties/PropertyMap'
 import SharedButton from '@/components/properties/SharedButton'
 import UserInfo from '@/components/properties/UserInfoProps'
+import PropertyReviews from '@/components/reviews/PropertyReviews'
 import SubmitReview from '@/components/reviews/SubmitReview'
 import { Separator } from '@/components/ui/separator'
 import { fetchPropertyDetail } from '@/utils/actions'
@@ -52,6 +53,7 @@ async function PropertyDetailsPage({ params }: { params: { id: string } }) {
       </section>
       <section>
         <SubmitReview propertyId={property.id} />
+        <PropertyReviews propertyId={property.id} />
       </section>
     </section>
   )
