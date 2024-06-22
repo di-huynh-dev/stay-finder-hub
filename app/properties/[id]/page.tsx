@@ -9,6 +9,7 @@ import PropertyDetails from '@/components/properties/PropertyDetails'
 import PropertyMap from '@/components/properties/PropertyMap'
 import SharedButton from '@/components/properties/SharedButton'
 import UserInfo from '@/components/properties/UserInfoProps'
+import SubmitReview from '@/components/reviews/SubmitReview'
 import { Separator } from '@/components/ui/separator'
 import { fetchPropertyDetail } from '@/utils/actions'
 import { redirect } from 'next/navigation'
@@ -48,6 +49,9 @@ async function PropertyDetailsPage({ params }: { params: { id: string } }) {
         <div className="lg:col-span-4 flex flex-col items-center">
           <BookingCalendar />
         </div>
+      </section>
+      <section>
+        <SubmitReview propertyId={property.id} />
       </section>
     </section>
   )
