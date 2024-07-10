@@ -1,7 +1,6 @@
 import FavoriteToggleButton from '@/components/card/FavoriteToggleButton'
 import PropertyRating from '@/components/card/PropertyRating'
 import Amenities from '@/components/properties/Amenities'
-import BookingCalendar from '@/components/properties/BookingCalendar'
 import BreadCrumbs from '@/components/properties/BreadCrumbs'
 import Description from '@/components/properties/Description'
 import ImageContainer from '@/components/properties/ImageContainer'
@@ -16,9 +15,22 @@ import { fetchPropertyDetail } from '@/utils/actions'
 import { redirect } from 'next/navigation'
 import { findExistingReview } from '@/utils/actions'
 import { auth } from '@clerk/nextjs/server'
+import dynamic from 'next/dynamic'
+import { Skeleton } from '@/components/ui/skeleton'
+
+const DynamicMap = dynamic(() => import('@/components/properties/PropertyMap'), {
+  ssr: false,
+  loading: () => <Skeleton className="h-[400px] w-full" />,
+})
+
+const DynamicBookingWrapper = dynamic(() => import('@/components/bookings/BookingWrapper'), {
+  ssr: false,
+  loading: () => <Skeleton className="h-[200px] w-full" />,
+})
 
 async function PropertyDetailsPage({ params }: { params: { id: string } }) {
   const property = await fetchPropertyDetail({ propertyId: params.id })
+
   if (!property) redirect('/')
   const { baths, bedrooms, beds, guests } = property
   const details = { baths, bedrooms, beds, guests }
@@ -51,10 +63,11 @@ async function PropertyDetailsPage({ params }: { params: { id: string } }) {
           <Separator className="mt-4" />
           <Description description={property.description} />
           <Amenities amenities={property.amenities} />
-          <PropertyMap countryCode={property.country} />
+          <DynamicMap countryCode={property.country} />
         </div>
         <div className="lg:col-span-4 flex flex-col items-center">
-          <BookingCalendar />
+          {/* calendar */}
+          <DynamicBookingWrapper propertyId={property.id} price={property.price} bookings={property.bookings} />
         </div>
       </section>
       <section>
